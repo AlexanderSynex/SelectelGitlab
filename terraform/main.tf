@@ -27,12 +27,13 @@ module "preemptible_server" {
   region              = var.region
   network_id          = module.nat.network_id
   subnet_id           = module.nat.subnet_id
-
+  user_data_path      = var.user_data_path
+  attached_disk_gb    = var.attached_disk_gb
   # Для смены прерываемого сервера на обычный используйте
   # переменную server_no_preemptible_tag:
   server_preemptible_tag = var.server_no_preemptible_tag
-  # server_preemptible_tag = var.server_preemptible_tag
   #  server_ssh_key_user    = ""
+  # user_data = file("${path.module}/script.sh")
 }
 
 # Создание inventory файла для ansible

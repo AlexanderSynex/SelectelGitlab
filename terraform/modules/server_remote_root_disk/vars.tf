@@ -42,3 +42,13 @@ variable "server_preemptible_tag" {
 variable "network_id" {}
 
 variable "subnet_id" {}
+
+variable "user_data_path" {
+  type = string
+  default = ""
+}
+
+variable "attached_disk_gb" {
+  default = 20
+  type = number
+}
