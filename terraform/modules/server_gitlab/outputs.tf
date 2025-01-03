@@ -11,8 +11,7 @@ output "server_root_volume_id" {
 }
 
 output "floating_ip" {
-  # value = module.floatingip.floatingip_address
-  value = var.public_ip
+  value = module.floatingip.floatingip_address
 }
 
 output "nat_ip" {

@@ -82,3 +82,6 @@ variable "password" {
   sensitive = true
 }
 
+variable "public_ip" {
+  sensitive = true
+}

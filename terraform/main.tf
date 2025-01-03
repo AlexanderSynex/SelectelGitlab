@@ -29,6 +29,7 @@ module "preemptible_server" {
   subnet_id           = module.nat.subnet_id
   user_data_path      = var.user_data_path
   attached_disk_gb    = var.attached_disk_gb
+  public_ip           = var.public_ip
   # Для смены прерываемого сервера на обычный используйте
   # переменную server_no_preemptible_tag:
   server_preemptible_tag = var.server_no_preemptible_tag
