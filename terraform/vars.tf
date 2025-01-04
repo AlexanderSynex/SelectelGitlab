@@ -27,7 +27,7 @@ variable "region" {
 }
 
 variable "server_volume_type" {
-  default = "basic.ru-7a"
+  default = "universal.ru-7a"
 }
 
 variable "server_image_name" {

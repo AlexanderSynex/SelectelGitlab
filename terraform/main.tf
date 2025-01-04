@@ -14,7 +14,7 @@ module "nat" {
 # Создание прерываемого сервера.
 module "preemptible_server" {
   count  = 1
-  source = "./modules/server_remote_root_disk"
+  source = "./modules/server_gitlab"
 
   server_name         = var.server_name
   server_zone         = var.server_zone
