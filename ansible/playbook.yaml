@@ -1,0 +1,7 @@
+- hosts: gitlab
+  tasks:
+    - name: Create access token
+      community.docker.docker_container_exec:
+        container: gitlab
+        command: gitlab-rails runner "puts 'hello world'"
+        # command: echo "hello world"

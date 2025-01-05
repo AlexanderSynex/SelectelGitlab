@@ -1,4 +1,10 @@
 # General 
+
+variable "ssh_key_file" {
+  default = "~/.ssh/id_rsa"
+  type = string
+}
+
 variable "keypair_name" {
   default = "tf_keypair"
 }

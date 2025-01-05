@@ -1,8 +1,8 @@
 # Создание ключевой пары для доступа к ВМ
 module "keypair" {
   source             = "./modules/keypair"
-  keypair_name       = "keypair-tf"
-  keypair_public_key = file("~/.ssh/id_ed25519.pub")
+  keypair_name       = "ssh_key_ed"
+  keypair_public_key = file("${var.ssh_key_file}.pub")
   region             = var.region
 }
 
@@ -61,7 +61,8 @@ module "gitlab_runner_server" {
 resource "local_file" "ansible_inventory" {
   content = templatefile("./resources/inventory.tmpl",
     {
-      gitlab_public_ip = module.gitlab_server.floating_ip
+      gitlab_public_ip  = module.gitlab_server.floating_ip
+      ssh_key_file      = var.ssh_key_file
       # webapp_vm_ip_public  = module.preemptible_server.0.floating_ip,
       # database_vm_ip_public      = module.preemptible_server.1.floating_ip,
       # webapp_vm_ip_nat     = module.preemptible_server.1.nat_ip.0
