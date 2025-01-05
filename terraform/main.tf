@@ -58,13 +58,14 @@ module "gitlab_runner_server" {
 
 
 # Создание inventory файла для ansible
-# resource "local_file" "ansible_inventory" {
-#   # content = templatefile("./resources/inventory.tmpl",
-#   #   {
-#   #     webapp_vm_ip_public  = module.preemptible_server.0.floating_ip,
-#   #     database_vm_ip_public      = module.preemptible_server.1.floating_ip,
-#   #     webapp_vm_ip_nat     = module.preemptible_server.1.nat_ip.0
-#   #   }
-#   # )
-#   # filename = "../ansible/inventory.ini"
-# }
+resource "local_file" "ansible_inventory" {
+  content = templatefile("./resources/inventory.tmpl",
+    {
+      gitlab_public_ip = module.gitlab_server.floating_ip
+      # webapp_vm_ip_public  = module.preemptible_server.0.floating_ip,
+      # database_vm_ip_public      = module.preemptible_server.1.floating_ip,
+      # webapp_vm_ip_nat     = module.preemptible_server.1.nat_ip.0
+    }
+  )
+  filename = "../ansible/inventory.ini"
+}
