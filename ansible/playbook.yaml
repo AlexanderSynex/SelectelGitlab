@@ -1,7 +1,9 @@
 - hosts: gitlab
   tasks:
     - name: Create access token
+      vars:
+        token_script: "{{ lookup('file', './scripts/create_token.rb') }}"
       community.docker.docker_container_exec:
         container: gitlab
-        command: gitlab-rails runner "puts 'hello world'"
-        # command: echo "hello world"
+        command: gitlab-rails runner "{{ token_script }}"
+        
