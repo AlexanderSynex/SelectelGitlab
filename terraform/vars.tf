@@ -1,25 +1,10 @@
+# General 
 variable "keypair_name" {
   default = "tf_keypair"
 }
 
 variable "os_auth_url" {
   default = "https://api.selvpc.ru/identity/v3"
-}
-
-variable "server_name" {
-  default = "tf_server"
-}
-
-variable "server_vcpus" {
-  default = 1
-}
-
-variable "server_ram_mb" {
-  default = 1024
-}
-
-variable "server_root_disk_gb" {
-  default = 5
 }
 
 variable "region" {
@@ -30,10 +15,6 @@ variable "server_volume_type" {
   default = "universal.ru-7a"
 }
 
-variable "server_image_name" {
-  default = "Ubuntu 22.04 LTS 64-bit"
-}
-
 variable "server_preemptible_tag" {
   default = ["preemptible"]
 }
@@ -42,15 +23,62 @@ variable "server_no_preemptible_tag" {
   default = []
 }
 
-variable "user_data_path" {
+# Gitlab
+
+variable "gitlab_vcpus" {
+  default = 1
+}
+
+variable "gitlab_ram_mb" {
+  default = 8192
+}
+
+variable "gitlab_root_disk_gb" {
+  default = 30
+}
+
+variable "gitlab_boot_volume_type" {
+  default = "fast.ru-7a"
+}
+
+variable "gitlab_image_name" {
+  default = "Cloud Gitlab 16.11.10 64-bit"
+}
+
+variable "gitlab_user_data_path" {
   type = string
   default = ""
 }
 
-variable "attached_disk_gb" {
+variable "gitlab_attached_disk_gb" {
   default = 20
   type = number
 }
+
+# Gitlab runner
+
+variable "runner_vcpus" {
+  default = 2
+}
+
+variable "runner_ram_mb" {
+  default = 4096
+}
+
+variable "runner_root_disk_gb" {
+  default = 20
+}
+
+variable "runner_image_name" {
+  default = "Cloud Gitlab Runner 17.0.0 64-bit"
+}
+
+variable "runner_user_data_path" {
+  type = string
+  default = ""
+}
+
+
 
 ### ATTENTION!!! Do not edit this block, please.
 variable "server_zone" {
@@ -82,6 +110,6 @@ variable "password" {
   sensitive = true
 }
 
-variable "public_ip" {
+variable "gitlab_public_ip" {
   sensitive = true
 }

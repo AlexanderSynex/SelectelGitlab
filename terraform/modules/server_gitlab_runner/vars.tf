@@ -1,20 +1,16 @@
 variable "server_vcpus" {
-  default = 4
+  default = 2
 }
 
 variable "server_ram_mb" {
-  default = 8192
+  default = 4096
 }
 
 variable "server_root_disk_gb" {
-  default = 30
+  default = 20
 }
 
 variable "server_boot_volume_type" {
-  default = "fast.ru-3a"
-}
-
-variable "server_volume_type" {
   default = "universal.ru-3a"
 }
 
@@ -43,17 +39,10 @@ variable "server_preemptible_tag" {
   default = []
 }
 
+variable "network_name" {
+  default = "network-eth0"
+}
+
 variable "network_id" {}
-
 variable "subnet_id" {}
-
-variable "user_data" {}
-
-variable "attached_disk_gb" {
-  default = 20
-  type = number
-}
-
-variable "public_ip" {
-  sensitive = true
-}
+# variable "user_data" {}

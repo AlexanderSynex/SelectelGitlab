@@ -39,19 +39,6 @@ resource "openstack_blockstorage_volume_v3" "boot_volume" {
   }
 }
 
-# Дополнительный диск
-resource "openstack_blockstorage_volume_v3" "volume_1" {
-  name              = "volume-${var.server_name}"
-  size              = var.attached_disk_gb
-  # image_id          = module.image_datasource.image_id
-  volume_type       = var.server_volume_type
-  availability_zone = var.server_zone
-
-  lifecycle {
-    ignore_changes = [image_id]
-  }
-}
-
 resource "openstack_compute_instance_v2" "instance_1" {
   name              = var.server_name
   flavor_id         = module.flavor.flavor_id
@@ -78,13 +65,6 @@ resource "openstack_compute_instance_v2" "instance_1" {
     boot_index       = 0
   }
 
-  block_device {
-    uuid             = openstack_blockstorage_volume_v3.volume_1.id
-    source_type      = "volume"
-    destination_type = "volume"
-    boot_index       = 1
-  }
-
   tags = var.server_preemptible_tag
 
   vendor_options {
@@ -97,11 +77,11 @@ resource "openstack_compute_instance_v2" "instance_1" {
       group = var.server_group_id
     }
   }
-
-  user_data = var.user_data
+  
+  # user_data = var.user_data
 }
 
-resource "openstack_networking_floatingip_associate_v2" "association_1" {
-  port_id     = openstack_networking_port_v2.port_1.id
-  floating_ip = var.public_ip
-}
+# resource "openstack_networking_floatingip_associate_v2" "association_1" {
+#   port_id     = openstack_networking_port_v2.port_1.id
+#   floating_ip = var.public_ip
+# }
