@@ -1,9 +1,58 @@
-- hosts: gitlab
+- name: Configure Gitlab
+  hosts: gitlab
   tasks:
-    - name: Create access token
-      vars:
-        token_script: "{{ lookup('file', './scripts/create_token.rb') }}"
+    # - name: Create access token
+    #   vars:
+    #     script: "{{ lookup('file', './scripts/create_token.rb') }}"
+    #   community.docker.docker_container_exec:
+    #     container: gitlab
+    #     command: gitlab-rails runner "{{ script }}"
+
+    - name: Copy students-list to server
+      ansible.builtin.copy:
+        src: ./resources/students.txt
+        dest: /tmp/students.txt
+
+    - name: Copy students-list to gitlab
+      community.docker.docker_container_copy_into:
+        container: gitlab
+        path: /tmp/students.txt
+        container_path: /tmp/students.txt
+    #
+    - name: Copy users-create script to server
+      ansible.builtin.copy:
+        src: ./scripts/create_users.rb
+        dest: /tmp/users.rb
+
+    - name: Copy users-create script to gitlab
+      community.docker.docker_container_copy_into:
+        container: gitlab
+        path: /tmp/users.rb
+        container_path: /tmp/users.rb
+
+    - name: Create students users
       community.docker.docker_container_exec:
         container: gitlab
-        command: gitlab-rails runner "{{ token_script }}"
-        
+        command: gitlab-rails runner /tmp/users.rb
+
+    - name: Load users creds to server
+      ansible.builtin.shell: docker cp gitlab:/tmp/user-creds.yaml /tmp/user-creds.yaml
+
+
+    - name: Load users creds locally
+      ansible.builtin.fetch:
+        src: /tmp/user-creds.yaml
+        dest: ./resources/user-creds.yaml
+        flat: true
+
+        # container: gitlab
+        # command: gitlab-rails runner /tmp/users.rb
+    # - name: Create students' users
+    #   vars:
+    #     script: "{{ lookup('file', './scripts/create_users.rb').split('\n') | join }}"
+    #   # debug:
+    #   #   msg: "Script arg: {{ script }}"
+    #   community.docker.docker_container_exec:
+    #     container: gitlab
+    #     command: gitlab-rails runner "{{ script }}"
+

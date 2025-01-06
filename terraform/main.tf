@@ -68,5 +68,5 @@ resource "local_file" "ansible_inventory" {
       # webapp_vm_ip_nat     = module.preemptible_server.1.nat_ip.0
     }
   )
-  filename = "../ansible/inventory.ini"
+  filename = "../ansible/resources/inventory.ini"
 }
