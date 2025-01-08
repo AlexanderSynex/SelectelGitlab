@@ -8,16 +8,16 @@
     #     container: gitlab
     #     command: gitlab-rails runner "{{ script }}"
 
-    - name: Copy students-list to server
+    - name: Copy users-list to server
       ansible.builtin.copy:
-        src: ./resources/students.txt
-        dest: /tmp/students.txt
+        src: ./resources/users.txt
+        dest: /tmp/users.txt
 
-    - name: Copy students-list to gitlab
+    - name: Copy users-list to gitlab
       community.docker.docker_container_copy_into:
         container: gitlab
-        path: /tmp/students.txt
-        container_path: /tmp/students.txt
+        path: /tmp/users.txt
+        container_path: /tmp/users.txt
     #
     - name: Copy users-create script to server
       ansible.builtin.copy:
@@ -30,7 +30,7 @@
         path: /tmp/users.rb
         container_path: /tmp/users.rb
 
-    - name: Create students users
+    - name: Create users users
       community.docker.docker_container_exec:
         container: gitlab
         command: gitlab-rails runner /tmp/users.rb
@@ -44,15 +44,3 @@
         src: /tmp/user-creds.yaml
         dest: ./resources/user-creds.yaml
         flat: true
-
-        # container: gitlab
-        # command: gitlab-rails runner /tmp/users.rb
-    # - name: Create students' users
-    #   vars:
-    #     script: "{{ lookup('file', './scripts/create_users.rb').split('\n') | join }}"
-    #   # debug:
-    #   #   msg: "Script arg: {{ script }}"
-    #   community.docker.docker_container_exec:
-    #     container: gitlab
-    #     command: gitlab-rails runner "{{ script }}"
-
