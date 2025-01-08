@@ -32,15 +32,15 @@ variable "server_no_preemptible_tag" {
 # Gitlab
 
 variable "gitlab_vcpus" {
-  default = 1
+  default = 8
 }
 
 variable "gitlab_ram_mb" {
-  default = 8192
+  default = 12288
 }
 
 variable "gitlab_root_disk_gb" {
-  default = 30
+  default = 64
 }
 
 variable "gitlab_boot_volume_type" {
@@ -57,7 +57,7 @@ variable "gitlab_user_data_path" {
 }
 
 variable "gitlab_attached_disk_gb" {
-  default = 20
+  default = 64
   type = number
 }
 

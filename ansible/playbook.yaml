@@ -36,11 +36,11 @@
         command: gitlab-rails runner /tmp/users.rb
 
     - name: Load users creds to server
-      ansible.builtin.shell: docker cp gitlab:/tmp/user-creds.yaml /tmp/user-creds.yaml
+      ansible.builtin.shell: docker cp gitlab:/tmp/users-creds.yaml /tmp/users-creds.yaml
 
 
     - name: Load users creds locally
       ansible.builtin.fetch:
-        src: /tmp/user-creds.yaml
+        src: /tmp/users-creds.yaml
         dest: ./resources/user-creds.yaml
         flat: true
