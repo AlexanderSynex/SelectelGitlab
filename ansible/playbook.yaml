@@ -98,7 +98,7 @@
     - name: Load runner config locally to terraform
       ansible.builtin.fetch:
         src: /tmp/runner-metadata.cfg
-        dest: ../terraform/resources/runner-metadata.cfg
+        dest: ../terraform/resources/runner_metadata.cfg
         flat: true
 
     - name: Restarting gitlab
