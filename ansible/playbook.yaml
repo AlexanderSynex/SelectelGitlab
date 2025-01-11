@@ -1,12 +1,25 @@
 - name: Configure Gitlab
   hosts: gitlab
   tasks:
+
+    - name: Changing systems timezone
+      community.docker.docker_container_exec:
+        container: gitlab
+        command: ln -s -f /usr/share/zoneinfo/Europe/Moscow /etc/localtime
+
+    - name: Changing gitlab timezone
+      community.docker.docker_container_exec:
+        container: gitlab
+        command: echo "gitlab_rails['time_zone'] = 'Europe/Moscow'" >> /etc/gitlab/gitlab.rb && gitlab-ctl reconfigure && gitlab-ctl restart
+
     # - name: Create access token
     #   vars:
     #     script: "{{ lookup('file', './scripts/create_token.rb') }}"
     #   community.docker.docker_container_exec:
     #     container: gitlab
     #     command: gitlab-rails runner "{{ script }}"
+
+    # Making users
 
     - name: Copy users-list to server
       ansible.builtin.copy:
@@ -30,10 +43,12 @@
         path: /tmp/users.rb
         container_path: /tmp/users.rb
 
-    - name: Create users users
+    - name: Create users
       community.docker.docker_container_exec:
         container: gitlab
         command: gitlab-rails runner /tmp/users.rb
+
+    # Loading user creds
 
     - name: Load users creds to server
       ansible.builtin.shell: docker cp gitlab:/tmp/users-creds.yaml /tmp/users-creds.yaml
@@ -44,3 +59,49 @@
         src: /tmp/users-creds.yaml
         dest: ./resources/user-creds.yaml
         flat: true
+
+
+    # Creating group runner
+
+    - name: Copy runner-create script to server
+      ansible.builtin.copy:
+        src: ./scripts/create_runner.rb
+        dest: /tmp/runner.rb
+
+    - name: Copy runner-create script to gitlab
+      community.docker.docker_container_copy_into:
+        container: gitlab
+        path: /tmp/runner.rb
+        container_path: /tmp/runner.rb
+
+    - name: Create group-runner
+      community.docker.docker_container_exec:
+        container: gitlab
+        command: gitlab-rails runner /tmp/runner.rb
+
+    # Loading runner creds
+
+    - name: Load runner creds from gitlab to server
+      ansible.builtin.shell: docker cp gitlab:/tmp/runner-creds.yaml /tmp/runner-creds.yaml
+
+    - name: Load runner creds locally
+      ansible.builtin.fetch:
+        src: /tmp/runner-creds.yaml
+        dest: ./resources/runner-creds.yaml
+        flat: true
+
+    # Loading runner config
+
+    - name: Load runner config from gitlab to server
+      ansible.builtin.shell: docker cp gitlab:/tmp/runner-metadata.cfg /tmp/runner-metadata.cfg
+
+    - name: Load runner config locally to terraform
+      ansible.builtin.fetch:
+        src: /tmp/runner-metadata.cfg
+        dest: ../terraform/resources/runner-metadata.cfg
+        flat: true
+
+    - name: Restarting gitlab
+      community.docker.docker_container_exec:
+        container: gitlab
+        command: gitlab-ctl restart
