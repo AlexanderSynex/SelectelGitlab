@@ -84,7 +84,7 @@ cd ./ansible
 ansible-playbook playbook.yaml
 ```
 
-After creating users ansible will generate users' credentials in yaml format `user-creds.yaml` (`./ansible/resources/user-creds.yaml`) with logins,emails and passwords for every user specified in `users.txt`. Moreover, it will generate creds for runners in `runner-creds.yaml` (`./ansible/resources/user-creds.yaml`). And `cloud-init` config  `runner-metadata.cfg`()
+After creating users ansible will generate users' credentials in yaml format `user-creds.yaml` (`./ansible/resources/user-creds.yaml`) with logins,emails and passwords for every user specified in `users.txt`. Moreover, it will generate creds for runners in `runner-creds.yaml` (`./ansible/resources/user-creds.yaml`). And `cloud-init` config  `runner_metadata.cfg` (`./terraform/resources/runner_metadata.cfg`).
 
 ### Creating runner instance
 
