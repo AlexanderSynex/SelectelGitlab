@@ -78,7 +78,7 @@ resource "openstack_compute_instance_v2" "instance_1" {
     }
   }
   
-  # user_data = var.user_data
+  user_data = var.user_data
 }
 
 # resource "openstack_networking_floatingip_associate_v2" "association_1" {

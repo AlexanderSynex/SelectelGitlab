@@ -53,38 +53,13 @@ variable "gitlab_image_name" {
 
 variable "gitlab_user_data_path" {
   type = string
-  default = ""
+  default = "gitlab_metadata.cfg"
 }
 
 variable "gitlab_attached_disk_gb" {
   default = 64
   type = number
 }
-
-# Gitlab runner
-
-variable "runner_vcpus" {
-  default = 2
-}
-
-variable "runner_ram_mb" {
-  default = 4096
-}
-
-variable "runner_root_disk_gb" {
-  default = 20
-}
-
-variable "runner_image_name" {
-  default = "Cloud Gitlab Runner 17.0.0 64-bit"
-}
-
-variable "runner_user_data_path" {
-  type = string
-  default = ""
-}
-
-
 
 ### ATTENTION!!! Do not edit this block, please.
 variable "server_zone" {

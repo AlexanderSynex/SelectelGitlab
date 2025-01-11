@@ -19,7 +19,7 @@ variable "server_volume_type" {
 }
 
 variable "server_name" {
-  default = "server_1"
+  default = "server_gitlab_1"
 }
 
 variable "server_image_name" {}

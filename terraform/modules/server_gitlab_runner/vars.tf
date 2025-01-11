@@ -15,7 +15,7 @@ variable "server_boot_volume_type" {
 }
 
 variable "server_name" {
-  default = "server_1"
+  default = "server_runner_1"
 }
 
 variable "server_image_name" {}
@@ -45,4 +45,4 @@ variable "network_name" {
 
 variable "network_id" {}
 variable "subnet_id" {}
-# variable "user_data" {}
+variable "user_data" {}
