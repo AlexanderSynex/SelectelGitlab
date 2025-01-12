@@ -40,7 +40,7 @@ variable "runner_ram_mb" {
 }
 
 variable "runner_root_disk_gb" {
-  default = 20
+  default = 40
 }
 
 variable "runner_image_name" {
