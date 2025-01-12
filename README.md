@@ -10,7 +10,8 @@
 `password` - Password of selectel control panel
 `gitlab_public_ip` - Domain name public ip
 `ssh_key_file` - Path to ssh key for remote access
-`gitlab_user_data_path` - Path to file with user_data content
+`gitlab_user_data_path` - Path to file with gitlab user_data content
+`runner_user_data_path` - Path to file with runner user_data content
 
 ```sh
 # Generating gitlab's user_data-config
@@ -54,7 +55,7 @@ runner_user_data_path = "../resources/runner_metadata.cfg"
 EOF
 ```
 
-## Using
+## Usage
 
 ### Create GitLab instance
 
@@ -62,7 +63,8 @@ EOF
 cd ./terraform/gitlab
 terraform init && \
 terraform validate && \
-terraform apply -auto-approve -var-file ../terraform.tfvars || terraform destroy -auto-approve
+terraform apply -auto-approve -var-file ../terraform.tfvars || terraform destroy -auto-approve && \
+cd ../..
 ```
 
 Terraform will generate `inventory.ini` file (`../ansible/resources/inventory.ini`) with gitlab's public ip.
@@ -80,8 +82,9 @@ Yuri Borisov
 
 To run ansible:
 ```sh
-cd ./ansible
-ansible-playbook playbook.yaml
+cd ./ansible && \
+ansible-playbook playbook.yaml && \
+cd ..
 ```
 
 After creating users ansible will generate users' credentials in yaml format `user-creds.yaml` (`./ansible/resources/user-creds.yaml`) with logins,emails and passwords for every user specified in `users.txt`. Moreover, it will generate creds for runners in `runner-creds.yaml` (`./ansible/resources/user-creds.yaml`). And `cloud-init` config  `runner_metadata.cfg` (`./terraform/resources/runner_metadata.cfg`).
@@ -94,5 +97,6 @@ This step follows Ansible's step. Terraform will create an instance of Gitlab-Ru
 cd ./terraform/gitlab-runner
 terraform init && \
 terraform validate && \
-terraform apply -auto-approve -var-file ../terraform.tfvars || terraform destroy -auto-approve
+terraform apply -auto-approve -var-file ../terraform.tfvars || terraform destroy -auto-approve && \
+cd ..
 ```
