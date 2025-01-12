@@ -57,7 +57,7 @@ variable "gitlab_user_data_path" {
 }
 
 variable "gitlab_attached_disk_gb" {
-  default = 64
+  default = 128
   type = number
 }
 
