@@ -1,6 +1,6 @@
-runner = Ci::Runner.new(description: 'My Shared Runner', active: true, name: 'my-shared-runner', token: SecureRandom.hex(20), runner_type: Ci::Runner::runner_types["group_type"]);
-runner.groups.append(User.last.groups.first);
-runner.shell_executor_type!;
+runner = Ci::Runner.new(description: 'My Shared Runner', active: true, name: 'my-runner' + SecureRandom.hex(4), token: SecureRandom.hex(20), runner_type: Ci::Runner::runner_types["instance_type"]);
+runner.docker_executor_type!;
+runner.tags.append('docker');
 runner.save!;
 runner_cred = {"#{runner.name}" => {"token" => "#{runner.token}"}};
 
