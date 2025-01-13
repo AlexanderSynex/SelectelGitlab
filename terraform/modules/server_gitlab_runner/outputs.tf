@@ -7,12 +7,7 @@ output "server_port_id" {
 }
 
 output "server_root_volume_id" {
-  value = openstack_blockstorage_volume_v3.volume_1.id
-}
-
-output "floating_ip" {
-  # value = module.floatingip.floatingip_address
-  value = var.public_ip
+  value = openstack_blockstorage_volume_v3.boot_volume.id
 }
 
 output "nat_ip" {

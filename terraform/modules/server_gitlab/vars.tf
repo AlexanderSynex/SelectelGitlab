@@ -7,15 +7,19 @@ variable "server_ram_mb" {
 }
 
 variable "server_root_disk_gb" {
-  default = 8
+  default = 30
 }
 
-variable "server_volume_type" {
+variable "server_boot_volume_type" {
   default = "fast.ru-3a"
 }
 
+variable "server_volume_type" {
+  default = "universal.ru-3a"
+}
+
 variable "server_name" {
-  default = "server_1"
+  default = "server_gitlab_1"
 }
 
 variable "server_image_name" {}
@@ -43,10 +47,7 @@ variable "network_id" {}
 
 variable "subnet_id" {}
 
-variable "user_data_path" {
-  type = string
-  default = ""
-}
+variable "user_data" {}
 
 variable "attached_disk_gb" {
   default = 20

@@ -31,7 +31,7 @@ resource "openstack_blockstorage_volume_v3" "boot_volume" {
   name              = "${var.server_name}-boot-volume"
   size              = var.server_root_disk_gb
   image_id          = module.image_datasource.image_id
-  volume_type       = var.server_volume_type
+  volume_type       = var.server_boot_volume_type
   availability_zone = var.server_zone
 
   lifecycle {
@@ -98,7 +98,7 @@ resource "openstack_compute_instance_v2" "instance_1" {
     }
   }
 
-  user_data = file(var.user_data_path)
+  user_data = var.user_data
 }
 
 resource "openstack_networking_floatingip_associate_v2" "association_1" {
