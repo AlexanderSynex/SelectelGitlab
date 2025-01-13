@@ -100,25 +100,7 @@
         src: /tmp/runner-metadata.cfg
         dest: ../terraform/resources/runner_metadata.cfg
         flat: true
-    
-    # # Configuring import settings
-    #
-    - name: Copy import script to server
-      ansible.builtin.copy:
-        src: ./scripts/configure_import.rb
-        dest: /tmp/import.rb
-
-    - name: Copy import script to gitlab
-      community.docker.docker_container_copy_into:
-        container: gitlab
-        path: /tmp/import.rb
-        container_path: /tmp/import.rb
-
-    - name: Configure import
-      community.docker.docker_container_exec:
-        container: gitlab
-        command: gitlab-rails runner /tmp/import.rb
-
+      
     - name: Restarting gitlab
       community.docker.docker_container_exec:
         container: gitlab
