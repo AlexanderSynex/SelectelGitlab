@@ -39,8 +39,6 @@ unique_users.each do |key, names|;
                 i += 1;
             end;
         end;
-        user = User.new(username: "rails_rails", email: "rails_rails@devops-spbstu.ru", name: "Rails Rails", password: "enot2001lol", password_confirmation: "enot2001lol", admin: false);
-
         user = User.new(username: "#{username}", email: "#{username}@devops-spbstu.ru", name: "#{name}", password: "#{password}", password_confirmation: "#{password}", admin: false)
         user.assign_personal_namespace(Organizations::Organization.default_organization)
         user.skip_confirmation! # Use it only if you wish user to be automatically confirmed. If skipped, user receives confirmation e-mail
