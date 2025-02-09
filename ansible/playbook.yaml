@@ -1,68 +1,60 @@
 - name: Configure Gitlab
   hosts: gitlab
   tasks:
-
-    # - name: Changing systems timezone
-    #   community.docker.docker_container_exec:
-    #     container: gitlab
-    #     command: ln -s -f /usr/share/zoneinfo/Europe/Moscow /etc/localtime
+    - name: Changing systems timezone
+      community.docker.docker_container_exec:
+        container: gitlab
+        command: ln -s -f /usr/share/zoneinfo/Europe/Moscow /etc/localtime
+    
+    - name: Changing gitlab timezone
+      community.docker.docker_container_exec:
+        container: gitlab
+        command: echo "gitlab_rails['time_zone'] = 'Europe/Moscow'" >> /etc/gitlab/gitlab.rb && gitlab-ctl reconfigure && gitlab-ctl restart
+    
+    # Creating users
+    
+    - name: Copy users-list to server
+      ansible.builtin.copy:
+        src: ./resources/users.txt
+        dest: /tmp/users.txt
+    
+    - name: Copy users-list to gitlab
+      community.docker.docker_container_copy_into:
+        container: gitlab
+        path: /tmp/users.txt
+        container_path: /tmp/users.txt
     #
-    # - name: Changing gitlab timezone
-    #   community.docker.docker_container_exec:
-    #     container: gitlab
-    #     command: echo "gitlab_rails['time_zone'] = 'Europe/Moscow'" >> /etc/gitlab/gitlab.rb && gitlab-ctl reconfigure && gitlab-ctl restart
-    #
-    # # - name: Create access token
-    # #   vars:
-    # #     script: "{{ lookup('file', './scripts/create_token.rb') }}"
-    # #   community.docker.docker_container_exec:
-    # #     container: gitlab
-    # #     command: gitlab-rails runner "{{ script }}"
-    #
-    # # Making users
-    #
-    # - name: Copy users-list to server
-    #   ansible.builtin.copy:
-    #     src: ./resources/users.txt
-    #     dest: /tmp/users.txt
-    #
-    # - name: Copy users-list to gitlab
-    #   community.docker.docker_container_copy_into:
-    #     container: gitlab
-    #     path: /tmp/users.txt
-    #     container_path: /tmp/users.txt
-    # #
-    # - name: Copy users-create script to server
-    #   ansible.builtin.copy:
-    #     src: ./scripts/create_users.rb
-    #     dest: /tmp/users.rb
-    #
-    # - name: Copy users-create script to gitlab
-    #   community.docker.docker_container_copy_into:
-    #     container: gitlab
-    #     path: /tmp/users.rb
-    #     container_path: /tmp/users.rb
-    #
-    # - name: Create users
-    #   community.docker.docker_container_exec:
-    #     container: gitlab
-    #     command: gitlab-rails runner /tmp/users.rb
-    #
-    # # Loading user creds
-    #
-    # - name: Load users creds to server
-    #   ansible.builtin.shell: docker cp gitlab:/tmp/users-creds.yaml /tmp/users-creds.yaml
-    #
-    #
-    # - name: Load users creds locally
-    #   ansible.builtin.fetch:
-    #     src: /tmp/users-creds.yaml
-    #     dest: ./resources/user-creds.yaml
-    #     flat: true
-    #
-    #
-    # # Creating group runner
-    #
+    - name: Copy users-create script to server
+      ansible.builtin.copy:
+        src: ./scripts/create_users.rb
+        dest: /tmp/users.rb
+    
+    - name: Copy users-create script to gitlab
+      community.docker.docker_container_copy_into:
+        container: gitlab
+        path: /tmp/users.rb
+        container_path: /tmp/users.rb
+    
+    - name: Create users
+      community.docker.docker_container_exec:
+        container: gitlab
+        command: gitlab-rails runner /tmp/users.rb
+    
+    # Loading user creds
+    
+    - name: Load users creds to server
+      ansible.builtin.shell: docker cp gitlab:/tmp/users-creds.yaml /tmp/users-creds.yaml
+    
+    
+    - name: Load users creds locally
+      ansible.builtin.fetch:
+        src: /tmp/users-creds.yaml
+        dest: ./resources/user-creds.yaml
+        flat: true
+    
+    
+    # Creating group runner
+    
     - name: Copy runner-create script to server
       ansible.builtin.copy:
         src: ./scripts/create_runner.rb
