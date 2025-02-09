@@ -17,5 +17,3 @@ data += "    token: \"#{runner.token}\"\n"
 
 File.write("/tmp/runner-metadata.cfg", data);
 File.write("/tmp/runner-creds.yaml", runner_cred.to_yaml);
-
-exit;
